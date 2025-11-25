@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Nandini!</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the terminal look */
+        .terminal {
+            font-family: 'Consolas', 'Courier New', monospace;
+            min-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: pulse-bg 10s infinite;
+        }
+
+        @keyframes pulse-bg {
+            0% { border-color: #fca5a5; }
+            50% { border-color: #fcd34d; }
+            100% { border-color: #fca5a5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="terminal bg-gray-800 text-green-400 p-8 rounded-xl border-4 w-full max-w-xl">
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Array containing the lines to be typed out, matching the C++ original
+        const lines = [
+            "============================================",
+            "      🎉🎂 HAPPY BIRTHDAY Nandini 🎂🎉      ",
+            "============================================",
+            "Wishing you a very happy birthday!",
+            "Open this link so that I can hack your account 🤑 : ", // Split this line
+            "Enjoy your special day! 🎈🎁",
+            "============================================"
+        ];
+
+        const link = "https://parth-malguzar.github.io/Birthday/";
+        const charDelay = 35; // Delay per character in milliseconds (35ms from C++)
+        const lineDelay = 250; // Delay between lines in milliseconds (250ms from C++)
+        const outputElement = document.getElementById('output');
+
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        // Function to handle the typewriter effect
+        function typeWriter() {
+            if (lineIndex < lines.length) {
+                let currentLine = lines[lineIndex];
+
+                // Special handling for the line that includes the URL
+                if (currentLine.includes("Open this link so that I can hack your account 🤑 :")) {
+                    // Type the introductory text first
+                    if (charIndex < currentLine.length) {
+                        outputElement.innerHTML += currentLine[charIndex];
+                        charIndex++;
+                        setTimeout(typeWriter, charDelay);
+                    } else {
+                        // After the intro text is typed, insert the clickable link
+                        const linkElement = document.createElement('a');
+                        linkElement.href = link;
+                        linkElement.textContent = link;
+                        linkElement.target = "_blank"; // Open in new tab
+                        linkElement.className = "text-yellow-400 hover:text-yellow-300 transition duration-150";
+                        outputElement.appendChild(linkElement);
+
+                        // Move to the next line after a short pause
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(() => {
+                            outputElement.innerHTML += '\n';
+                            typeWriter();
+                        }, lineDelay);
+                    }
+                } else {
+                    // Standard line typing
+                    if (charIndex < currentLine.length) {
+                        outputElement.innerHTML += currentLine[charIndex];
+                        charIndex++;
+                        setTimeout(typeWriter, charDelay);
+                    } else {
+                        // End of line, start a new line
+                        lineIndex++;
+                        charIndex = 0;
+                        outputElement.innerHTML += '\n';
+                        setTimeout(typeWriter, lineDelay);
+                    }
+                }
+            }
+        }
+
+        // Start the typing animation once the page is loaded
+        window.onload = typeWriter;
+
+    </script>
+</body>
+</html>
